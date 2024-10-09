@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+Django - Authentication | {{title}}
+{% endblock %}
+
+{% block content %}
+<div class='d-flex justify-content-center align-items-center my-5'>
+  <div class='card pb-0' style="width: 25rem;">
+    <div class='card-header'>
+        <h1 class='card-title text-center fs-5 fw-light'>
+          {{header}} <span class='fas fa-envelope text-primary ms-2'></span>
+        </h1>
+    </div>
+    <div class='card-body'>
+      <form method='POST' action="{% url 'core:contactus' %}" class='overlay' id='contactusForm'>
+      {% csrf_token %}
+      {{ form|crispy }}
+        <div class='d-grid'>
+          <button type='submit' class='btn btn-primary btn-lg'>
+            {{action}} <span class='fas fa-paper-plane ms-2'></span>
+          </button>
+        </div>
+      </form>
+    </div>
+</div>
+</div>
+{% endblock %}

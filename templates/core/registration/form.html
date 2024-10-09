@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Registration - {{title}}
+{% endblock %}
+{% block content %}
+<div class='d-flex justify-content-center align-items-center' style="height: 100vh">
+  <div class='card pb-0' style='width: 20rem;'>
+    <div class='card-header'>
+        <h5 class='card-title text-center'>
+          {{header}}
+        </h5>
+    </div>
+    <div class='card-body'>
+      {% if form_type == 'login' or form_type == 'signup' %}
+      <a href="{% url 'core:google-login' %}" class='btn btn-danger btn-block btn-lg mb-3'>
+        {{socialAuthentication}}
+      </a>
+      {% endif %}
+      <form method='POST'
+        action="
+        {% if form_type == 'login' %}
+        {% url 'core:login' %}
+        {% elif form_type == 'request_verification' %}{% url 'core:request-verification' %}
+        {% elif form_type == 'password_change' %}{% url 'core:password-change-view' %}
+        {% elif form_type == 'reset' %}{% url 'core:password-reset' %}
+        {% elif form_type == 'confirm' %}{% url 'core:password-reset-confirm' uidb64=uidb64 token=token %}
+        {% else %}
+        {% url 'core:signup' %}
+        {% endif %}"
+        >
+        {% csrf_token %}
+        {{ form|crispy }}
+        {% if form_type == 'login' %}
+        <div class='d-flex align-content-center pb-2 gap-1 bg-light mb-2 pt-2 rounded'>
+          <label for='remember_me'
+            class='ms-1 form-check-label'>
+            Remember Me: 
+          </label>
+                     <input type='checkbox' name='remember_me' id='remember_me' class='' value='yes'>
+        </div>
+        {% endif %}
+        <div class='d-grid'>
+        <button type='submit' class='btn btn-primary btn-lg'>{{action}}</button>
+        </div>
+      </form>
+      <div class='d-flex justify-content-center flex-column gap-2 mt-2'>
+      {% if form_type == 'login' %}
+        <a href="{% url 'core:password-reset' %}" class='text-center bg-light text-primary py-2 rounded bg-gray'>
+          Forgot Username/Password</a>
+        <a class='text-center bg-light text-black py-2 rounded bg-gray'
+          class='text-primary' href="{% url 'core:signup' %}">Don't have an account? <span class='text-primary'>Sign up</span></a>
+        {% elif form_type == 'signup' %}
+        <a class='text-center bg-light text-black py-2 rounded bg-gray'
+          class='text-primary' href="{% url 'core:login' %}"> Already have an account? <span class='text-primary'>Login</span></a>
+      {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

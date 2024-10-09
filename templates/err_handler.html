@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Error {{title}}{% endblock %}
+{% block content %}
+<div class='d-flex justify-content-center align-items-center flex-column my-5'>
+    <script>
+        // Redirect to home page after 5 seconds
+        setTimeout(function() {
+            window.location.href = "{% url 'index' %}";
+        }, 5000);
+    </script>
+    <h1>
+        Error {{status_code}}: {{message}}
+    </h1>
+    <p>You will be redirected to the home page shortly.</p>
+    <p>If you are not redirected, <a href="{% url 'index' %}">click here</a>.</p>
+</div>
+{% endblock %}
