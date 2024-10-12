@@ -1,4 +1,5 @@
 import os
+import sys
 from pathlib import Path
 from celery.schedules import crontab
 import environ
@@ -19,12 +20,11 @@ environ.Env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = (
-    'django-insecure-4ju2n@$f9d0c=h)_g0lbb%k9&@rf(xa$d$g$&5ri$uf)*gev^4'
-)
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ['DEBUG']
+# DEBUG = False # enable for production
 
 ALLOWED_HOSTS = [".replit.dev", ".replit.app"]
 CSRF_TRUSTED_ORIGINS = ["https://*.replit.dev", "https://*.replit.app"]
@@ -46,9 +46,10 @@ CUSTOM_APPS = ['core.apps.CoreConfig']
 THIRD_PARTY_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
+    'debug_toolbar',
 ]
 
-INSTALLED_APPS = DJANGO_APPS + CUSTOM_APPS + THIRD_PARTY_APPS
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + CUSTOM_APPS
 
 AUTH_USER_MODEL = 'core.User'
 
@@ -83,43 +84,8 @@ MESSAGE_TAGS = {
     messages.WARNING: 'warning',
 }
 
-# Deployment settings and configurations
-if not DEBUG:
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = 'smtp.gmail.com'
-    EMAIL_PORT = 587
-    EMAIL_HOST_USER = os.environ['FROM_DEFAULT_EMAIL']
-    EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
-    EMAIL_USE_TLS = True
-    EMAIL_USE_SSL = False
-
-    SESSION_COOKIE_SECURE = True
-    SECURE_BROWSER_XSS_FILTER = True
-    SECURE_CONTENT_TYPE_NOSNIFF = True
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_SECONDS = 31536000
-    SECURE_DIRECT_EXEPT = []
-    SECURE_SSL_REDIRECT = True
-    # CSRF_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = False
-    X_FRAME_OPTIONS = 'DENY'
-    SECURE_HSTS_PRELOAD = True
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARED_PROTO', 'https')
-
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-"""
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = os.environ['FROM_DEFAULT_EMAIL']
-EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
-"""
-
-
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -127,6 +93,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     #'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # Add the account middleware:
     # Custom Middleware
     'core.middleware.RedirectAuthenticatedUserMiddleware',
@@ -161,15 +128,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'django_project.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -203,8 +161,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-CUSTOM_DOMAIN = os.environ.get('CUSTOM_DOMAIN')
-
 STATIC_URL = '/static/'
 STATIC_ROOT = 'static'
 STATICFILES_DIRS = [
@@ -212,13 +168,95 @@ STATICFILES_DIRS = [
 ]
 MEDIA_URL = '/media/'
 STATIC_ROOT = 'media'
-FROM_DEFAULT_EMAIL = os.environ['FROM_DEFAULT_EMAIL']
 
+INTERNAL_IPS = ['127.0.0.1']
+
+TESTING = 'test' in sys.argv # set to True if running tests
+
+if TESTING:
+    INSTALLED_APPS = [
+        *INSTALLED_APPS,
+        'debug_toolbar',
+    ]
+    MIDDLEWARE = [
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+        *MIDDLEWARE,
+    ]
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+"""
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.environ['FROM_DEFAULT_EMAIL']
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+"""
+
+# Deployment settings and configurations
+
+if not DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = 'smtp.gmail.com'
+    EMAIL_PORT = 587
+    EMAIL_HOST_USER = os.environ['FROM_DEFAULT_EMAIL']
+    EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+    EMAIL_USE_TLS = True
+    EMAIL_USE_SSL = False
+
+    SESSION_COOKIE_SECURE = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_DIRECT_EXEPT = []
+    SECURE_SSL_REDIRECT = True
+    CSRF_COOKIE_SECURE = True
+    # CSRF_COOKIE_SECURE = False
+    X_FRAME_OPTIONS = 'DENY'
+    SECURE_HSTS_PRELOAD = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARED_PROTO', 'https')
+    SECURE_SSL_HOST = True
+    
+    CUSTOM_DOMAIN = os.environ.get('CUSTOM_DOMAIN')
+
+    INSTALLED_APPS = [
+        *INSTALLED_APPS,
+        'debug_toolbar',
+    ]
+    MIDDLEWARE = [
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+        *MIDDLEWARE,
+    ]
+
+
+# Database
+# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+
+# if not DEBUG:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#             'NAME': os.environ['POSTGRES_DB_NAME'],
+#             'USER': os.environ['POSTGRES_USERNAME'],
+#             'PASSWORD': os.environ['POSTGRES_PASSWORD'],
+#             'HOST': os.environ['POSTGRES_HOSTNAME'],
+#             'PORT': os.environ['POSTGRES_PORT'],
+#         }
+#     }
+# else:
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+# Celery tasks & workers settings
 CELERY_BROKER_URL = 'redis://https://localhost:6379/0'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
-# CELERY_ACCEPT_CONTENT = ['application/json']
-# CELERY_TASK_SERIALIZER = 'json'
-# CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
 CELERY_BEAT_SCHEDULE = {
    'run_tests_monthly':{
@@ -226,6 +264,9 @@ CELERY_BEAT_SCHEDULE = {
        'schedule': crontab(day_of_month=str(1), hour=str(0), minute=str(0))
    },
 }
+# CELERY_ACCEPT_CONTENT = ['application/json']
+# CELERY_TASK_SERIALIZER = 'json'
+# CELERY_RESULT_SERIALIZER = 'json'
 # CELERY_TASK_ALWAYS_EAGER = True
 # CELERY_TASK_EAGER_PROPAGATES = True
 # CELERY_TASK_DEFAULT_QUEUE = 'default'
@@ -235,10 +276,9 @@ CELERY_BEAT_SCHEDULE = {
 # CELERY_TASK_DEFAULT_ROUTING_KEY = 'default'
 # CELERY_TASK_DEFAULT_QUEUE = 'default'
 # CELERY_TASK_DEFAULT_EXCHANGE = 'default'
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
-# Custom Variable
+FROM_DEFAULT_EMAIL = os.environ['FROM_DEFAULT_EMAIL']
+# X_FRAME_OPTIONS = 'ALLOW-FROM https://2f8112c9-cb1b-440c-ae1b-6e29351a4060-00-dbccepdzye9t.picard.replit.dev/'
 GOOGLE_CLIENT_ID = os.environ['GOOGLE_CLIENT_ID']
 GOOGLE_CLIENT_SECRET = os.environ['GOOGLE_CLIENT_SECRET']
 GOOGLE_REDIRECT_URI = os.environ['GOOGLE_REDIRECT_URI']
@@ -247,4 +287,8 @@ GOOGLE_AUTHORIZATION_URL = os.environ['GOOGLE_AUTHORIZATION_URL']
 GOOGLE_TOKEN_URL = os.environ['GOOGLE_TOKEN_URL']
 GOOGLE_USER_INFO_URL = os.environ['GOOGLE_USER_INFO_URL']
 
+
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
