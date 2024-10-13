@@ -169,7 +169,11 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 STATIC_ROOT = 'media'
 
-INTERNAL_IPS = ['127.0.0.1']
+INTERNAL_IPS = [
+    '127.0.0.1',  # For localhost access
+    '2f8112c9-cb1b-440c-ae1b-6e29351a4060-00-dbccepdzye9t.picard.replit.dev'  # Replit public URL
+]
+
 
 TESTING = 'test' in sys.argv # set to True if running tests
 
@@ -282,10 +286,9 @@ FROM_DEFAULT_EMAIL = os.environ['FROM_DEFAULT_EMAIL']
 GOOGLE_CLIENT_ID = os.environ['GOOGLE_CLIENT_ID']
 GOOGLE_CLIENT_SECRET = os.environ['GOOGLE_CLIENT_SECRET']
 GOOGLE_REDIRECT_URI = os.environ['GOOGLE_REDIRECT_URI']
-#GOOGLE_OAUTH_SCOPE = os.environ['GOOGLE_OAUTH_SCOPE']
 GOOGLE_AUTHORIZATION_URL = os.environ['GOOGLE_AUTHORIZATION_URL']
 GOOGLE_TOKEN_URL = os.environ['GOOGLE_TOKEN_URL']
-GOOGLE_USER_INFO_URL = os.environ['GOOGLE_USER_INFO_URL']
+GOOGLE_USERINFO_URL= os.environ['GOOGLE_USERINFO_URL']
 
 
 
