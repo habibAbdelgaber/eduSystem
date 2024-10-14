@@ -41,12 +41,12 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v3
 
     - name: Set up Python 3.9
       uses: actions/setup-python@v3
       with:
-        python-version: '3.9'
+        python-version: 3.9
 
     - name: Install dependencies
       run: |
@@ -59,4 +59,4 @@ jobs:
 
     - name: Run Tests
       run: |
-        test
+        python manage.py test
