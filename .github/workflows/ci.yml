@@ -63,7 +63,11 @@ jobs:
         POSTGRES_DATABASE_PASSWORD: ${{secrets.POSTGRES_DATABASE_PASSWORD}}
         POSTGRES_DATABASE_HOSTNAME: ${{secrets.POSTGRES_DATABASE_HOSTNAME}}
         POSTGRES_DATABASE_PORT: ${{secrets.POSTGRES_DATABASE_PORT}}
-
+        
+    - name: Code Formatter
+      run: |
+        python manage.py codeFormatting.py django_project/settings.py
+        
     - name: Run Linter
       run: |
         pip install flake8
