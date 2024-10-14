@@ -44,7 +44,7 @@ class UrlNotFoundInterceptionMiddleware:
         """
         Intercept 404 errors and redirect to the home page
         """
-        allowed_paths = ['/admin/']
+        allowed_paths = ['/django-admin/']
         if request.path_info in allowed_paths:
             return self.get_response(request)
         try:

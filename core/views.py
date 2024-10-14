@@ -16,7 +16,6 @@ from core.auth.password.password_reset import (PasswordResetCompleteView,
                                                PasswordResetDoneView,
                                                RequestPasswordResetView)
 from core.auth.signup import SignupView
-from core.err_handler import CommonErrorHandlerView
 
 from core.users.delete import AccountDeletionView
 from core.users.details import UserUpdateView
@@ -36,8 +35,6 @@ password_reset_confirm_view = PasswordResetConfirmView.as_view()
 password_reset_complete_view = PasswordResetCompleteView.as_view()
 
 contactus_view = ContactUsView.as_view()
-
-common_err_handler_view = CommonErrorHandlerView.as_view()
 
 user_update_view = UserUpdateView.as_view()
 user_account_deletion_view = AccountDeletionView.as_view()

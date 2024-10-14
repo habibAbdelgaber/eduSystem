@@ -85,7 +85,7 @@ MESSAGE_TAGS = {
 }
 
 MIDDLEWARE = [
-    #'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -100,10 +100,6 @@ MIDDLEWARE = [
     #'core.middleware.HandleCommonErrorMiddleware',
     'core.middleware.UrlNotFoundInterceptionMiddleware',
 ]
-
-if DEBUG:
-    
-    MIDDLEWARE = ['debug_toolbar.middleware.DebugToolbarMiddleware'] + MIDDLEWARE
 
 
 if DEBUG is False:
