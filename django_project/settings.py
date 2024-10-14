@@ -38,16 +38,12 @@ DJANGO_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #'django.contrib.sites',
+     'debug_toolbar',
 ]
 
 CUSTOM_APPS = ['core.apps.CoreConfig']
 
-THIRD_PARTY_APPS = [
-    'crispy_forms',
-    'crispy_bootstrap5',
-    'debug_toolbar',
-]
+THIRD_PARTY_APPS = ['crispy_forms', 'crispy_bootstrap5']
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + CUSTOM_APPS
 
@@ -93,11 +89,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     #'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # Add the account middleware:
     # Custom Middleware
     'core.middleware.RedirectAuthenticatedUserMiddleware',
-    #'core.middleware.HandleCommonErrorMiddleware',
     'core.middleware.UrlNotFoundInterceptionMiddleware',
 ]
 
@@ -124,7 +118,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 # `allauth` needs this from django
-                'django.template.context_processors.request',
+                # 'django.template.context_processors.request',
             ],
         },
     },
@@ -179,32 +173,10 @@ INTERNAL_IPS = [
 ]
 
 
-TESTING = 'test' in sys.argv # set to True if running tests
-
-if TESTING:
-    INSTALLED_APPS = [
-        *INSTALLED_APPS,
-        'debug_toolbar',
-    ]
-    MIDDLEWARE = [
-        'debug_toolbar.middleware.DebugToolbarMiddleware',
-        *MIDDLEWARE,
-    ]
-
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-"""
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = os.environ['FROM_DEFAULT_EMAIL']
-EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
-"""
 
 # Deployment settings and configurations
-
 if not DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     EMAIL_HOST = 'smtp.gmail.com'
@@ -229,32 +201,17 @@ if not DEBUG:
     SECURE_SSL_HOST = True
     
     CUSTOM_DOMAIN = os.environ.get('CUSTOM_DOMAIN')
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': os.environ['POSTGRES_DB_NAME'],
+            'USER': os.environ['POSTGRES_USERNAME'],
+            'PASSWORD': os.environ['POSTGRES_PASSWORD'],
+            'HOST': os.environ['POSTGRES_HOSTNAME'],
+            'PORT': os.environ['POSTGRES_PORT'],
+        }
+    }
 
-    INSTALLED_APPS = [
-        *INSTALLED_APPS,
-        'debug_toolbar',
-    ]
-    MIDDLEWARE = [
-        'debug_toolbar.middleware.DebugToolbarMiddleware',
-        *MIDDLEWARE,
-    ]
-
-
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-# if not DEBUG:
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#             'NAME': os.environ['POSTGRES_DB_NAME'],
-#             'USER': os.environ['POSTGRES_USERNAME'],
-#             'PASSWORD': os.environ['POSTGRES_PASSWORD'],
-#             'HOST': os.environ['POSTGRES_HOSTNAME'],
-#             'PORT': os.environ['POSTGRES_PORT'],
-#         }
-#     }
-# else:
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
