@@ -19,6 +19,7 @@ cryptography==43.0.1
 dill==0.3.9
 Django==5.0.2
 django-crispy-forms==2.3
+django-debug-toolbar==4.4.6
 django-utils-six==2.0
 hiredis==3.0.0
 idna==3.10
