@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECRET_KEY = os.environ['SECRET_KEY']
 SECRET_KEY = 'g-nKKbU3j0nc0x5TaclJAsKlJxi6hz_-3uQxWWWVGfyqU0vTFYk6VeN5YIRu7vx_AjZg86vE3DccgLAbR5ei9nT7bxq5o-3TwVW5Mgwvecx8179z8PyWjzxV1-oJy8xk8keEHkXtlZ1KsuEI4XPuglhAhNvjF5nJI'
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ['DEBUG']
+DEBUG = os.environ.get('DEBUG', False)
 # DEBUG = False # enable for production
 
 ALLOWED_HOSTS = [".replit.dev", ".replit.app"]
