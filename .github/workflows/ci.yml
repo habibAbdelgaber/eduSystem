@@ -68,7 +68,7 @@ jobs:
         
     - name: Code Formatter
       run: |
-        python manage.py codeFormatting.py django_project/settings.py
+        python manage.py codeFormatting django_project/settings.py
         
     - name: Run Linter
       run: |
