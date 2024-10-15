@@ -46,8 +46,8 @@ jobs:
       run: |
         python manage.py migrate
 
-    - name: Set Environment Variables
-      run: echo "SECRET_KEY=${{secrets.SECRET_KEY}}" >> $GITHUB_ENV
+    # - name: Set Environment Variables
+      # run: echo "SECRET_KEY=${{secrets.SECRET_KEY}}" >> $GITHUB_ENV
 
       env:
         # SECRET_KEY: ${{ secrets.SECRET_KEY }}
