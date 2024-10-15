@@ -21,7 +21,7 @@ environ.Env.read_env()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECRET_KEY = os.environ['SECRET_KEY']
-SECRET_KEY = 'g-nKKbU3j0nc0x5TaclJAsKlJxi6hz_-3uQxWWWVGfyqU0vTFYk6VeN5YIRu7vx_AjZg86vE3DccgLAbR5ei9nT7bxq5o-3TwVW5Mgwvecx8179z8PyWjzxV1-oJy8xk8keEHkXtlZ1KsuEI4XPuglhAhNvjF5nJI'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', False)
 # DEBUG = False # enable for production
@@ -181,8 +181,8 @@ if not DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     EMAIL_HOST = 'smtp.gmail.com'
     EMAIL_PORT = 587
-    EMAIL_HOST_USER = os.environ['FROM_DEFAULT_EMAIL']
-    EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
     EMAIL_USE_TLS = True
     EMAIL_USE_SSL = False
 
@@ -204,11 +204,11 @@ if not DEBUG:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': os.environ['POSTGRES_DATABASE_NAME'],
-            'USER': os.environ['POSTGRES_DATABASE_USERNAME'],
-            'PASSWORD': os.environ['POSTGRES_DATABASE_PASSWORD'],
-            'HOST': os.environ['POSTGRES_DATABASE_HOSTNAME'],
-            'PORT': os.environ['POSTGRES_DATABASE_PORT'],
+            'NAME': os.environ.get('POSTGRES_DATABASE_NAME'),
+            'USER': os.environ.get('POSTGRES_DATABASE_USERNAME'),
+            'PASSWORD': os.environ.get('POSTGRES_DATABASE_PASSWORD'),
+            'HOST': os.environ.get('POSTGRES_DATABASE_HOSTNAME'),
+            'PORT': os.environ.get('POSTGRES_DATABASE_PORT'),
         }
     }
 
@@ -244,12 +244,12 @@ CELERY_BEAT_SCHEDULE = {
 
 FROM_DEFAULT_EMAIL = os.environ['FROM_DEFAULT_EMAIL']
 # X_FRAME_OPTIONS = 'ALLOW-FROM https://2f8112c9-cb1b-440c-ae1b-6e29351a4060-00-dbccepdzye9t.picard.replit.dev/'
-GOOGLE_CLIENT_ID = os.environ['GOOGLE_CLIENT_ID']
-GOOGLE_CLIENT_SECRET = os.environ['GOOGLE_CLIENT_SECRET']
-GOOGLE_REDIRECT_URI = os.environ['GOOGLE_REDIRECT_URI']
-GOOGLE_AUTHORIZATION_URL = os.environ['GOOGLE_AUTHORIZATION_URL']
-GOOGLE_TOKEN_URL = os.environ['GOOGLE_TOKEN_URL']
-GOOGLE_USERINFO_URL= os.environ['GOOGLE_USERINFO_URL']
+GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
+GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET')
+GOOGLE_REDIRECT_URI = os.environ.get('GOOGLE_REDIRECT_URI')
+GOOGLE_AUTHORIZATION_URL = os.environ.get('GOOGLE_AUTHORIZATION_URL')
+GOOGLE_TOKEN_URL = os.environ.get('GOOGLE_TOKEN_URL')
+GOOGLE_USERINFO_URL= os.environ.get('GOOGLE_USERINFO_URL')
 
 
 
