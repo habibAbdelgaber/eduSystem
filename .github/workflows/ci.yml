@@ -47,8 +47,9 @@ jobs:
         python manage.py migrate
 
       env:
-        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        #SECRET_KEY: ${{ secrets.SECRET_KEY }}
         DEBUG: ${{ secrets.DEBUG }}
+        SECRET_KEY: ${{secrets.SECRET_KEY}}
         DATABASE_URL: postgresql://postgres:postgres@postgres:5432/test_db
         GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
         GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
