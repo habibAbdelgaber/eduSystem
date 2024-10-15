@@ -3,7 +3,7 @@ Core Signals
 """
 
 from django.contrib.auth import get_user_model
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 
 from .models import UserProfile
@@ -27,4 +27,3 @@ def user_profile_deleted(sender, instance, **kwargs):
         instance.profile.delete()
     except UserProfile.DoesNotExist:
         pass
-    

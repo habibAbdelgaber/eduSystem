@@ -1,12 +1,13 @@
 from django import forms
-from django.contrib.auth import authenticate, get_user_model
+from django.contrib.auth import authenticate
+from django.contrib.auth import forms as auth_forms
+from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import \
     PasswordChangeForm as BasePasswordChangeForm
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.forms import SetPasswordForm as BaseSetPasswordForm
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth import forms as auth_forms
 
 from .models import UserProfile
 
@@ -14,8 +15,32 @@ class UserChangeForm(auth_forms.UserChangeForm):
     """
     User change form
     """
-    first_name = forms.CharField(label=_(''), max_length=50, required=False, widget=forms.TextInput(attrs={'class': 'form-control py-2', 'placeholder': 'First Name', 'autofocus': True}))
-    last_name = forms.CharField(label=_(''), max_length=50, required=False, widget=forms.TextInput(attrs={'class': 'form-control py-2', 'placeholder': 'Last Name', 'autofocus': True}))
+
+    first_name = forms.CharField(
+        label=_(''),
+        max_length=50,
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control py-2',
+                'placeholder': 'First Name',
+                'autofocus': True,
+            }
+        ),
+    )
+    last_name = forms.CharField(
+        label=_(''),
+        max_length=50,
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control py-2',
+                'placeholder': 'Last Name',
+                'autofocus': True,
+            }
+        ),
+    )
+
     class Meta:
         model = get_user_model()
         fields = ('first_name', 'last_name')
@@ -25,11 +50,26 @@ class UserProfileForm(forms.ModelForm):
     """
     User profile form
     """
-    bio = forms.CharField(label=_(''), max_length=250, required=False, widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Bio', 'autofocus': True, 'rows': '3', 'resize': '0', 'cols': '50'}))
+
+    bio = forms.CharField(
+        label=_(''),
+        max_length=250,
+        required=False,
+        widget=forms.Textarea(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Bio',
+                'autofocus': True,
+                'rows': '3',
+                'resize': '0',
+                'cols': '50',
+            }
+        ),
+    )
+
     class Meta:
         model = UserProfile
         fields = ('bio', 'img')
-
 
 class SignupForm(forms.ModelForm):
     """

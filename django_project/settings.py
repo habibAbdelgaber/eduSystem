@@ -1,8 +1,8 @@
 import os
-import sys
 from pathlib import Path
-from celery.schedules import crontab
+
 import environ
+from celery.schedules import crontab
 from django.contrib.messages import constants as messages
 
 env = environ.Env(
@@ -38,7 +38,7 @@ DJANGO_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-     'debug_toolbar',
+    'debug_toolbar',
 ]
 
 CUSTOM_APPS = ['core.apps.CoreConfig']
@@ -53,8 +53,6 @@ AUTHENTICATION_BACKENDS = [
     # 'django.contrib.auth.backends.ModelBackend',
     'core.backends.EmailBackend',
 ]
-
-
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
@@ -95,7 +93,6 @@ MIDDLEWARE = [
     'core.middleware.UrlNotFoundInterceptionMiddleware',
 ]
 
-
 if DEBUG is False:
     del MIDDLEWARE[0]
 
@@ -125,7 +122,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'django_project.wsgi.application'
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -169,10 +165,8 @@ STATIC_ROOT = 'media'
 
 INTERNAL_IPS = [
     '127.0.0.1',  # For localhost access
-    '2f8112c9-cb1b-440c-ae1b-6e29351a4060-00-dbccepdzye9t.picard.replit.dev'  # Replit public URL
+    '2f8112c9-cb1b-440c-ae1b-6e29351a4060-00-dbccepdzye9t.picard.replit.dev',  # Replit public URL
 ]
-
-
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
@@ -199,7 +193,7 @@ if not DEBUG:
     SECURE_HSTS_PRELOAD = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARED_PROTO', 'https')
     SECURE_SSL_HOST = True
-    
+
     CUSTOM_DOMAIN = os.environ.get('CUSTOM_DOMAIN')
     DATABASES = {
         'default': {
@@ -224,10 +218,10 @@ CELERY_BROKER_URL = 'redis://https://localhost:6379/0'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 CELERY_TIMEZONE = 'UTC'
 CELERY_BEAT_SCHEDULE = {
-   'run_tests_monthly':{
-       'task': 'core.tasks.run_tests',
-       'schedule': crontab(day_of_month=str(1), hour=str(0), minute=str(0))
-   },
+    'run_tests_monthly': {
+        'task': 'core.tasks.run_tests',
+        'schedule': crontab(day_of_month=str(1), hour=str(0), minute=str(0)),
+    },
 }
 # CELERY_ACCEPT_CONTENT = ['application/json']
 # CELERY_TASK_SERIALIZER = 'json'
@@ -249,9 +243,7 @@ GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET')
 GOOGLE_REDIRECT_URI = os.environ.get('GOOGLE_REDIRECT_URI')
 GOOGLE_AUTHORIZATION_URL = os.environ.get('GOOGLE_AUTHORIZATION_URL')
 GOOGLE_TOKEN_URL = os.environ.get('GOOGLE_TOKEN_URL')
-GOOGLE_USERINFO_URL= os.environ.get('GOOGLE_USERINFO_URL')
-
-
+GOOGLE_USERINFO_URL = os.environ.get('GOOGLE_USERINFO_URL')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

@@ -1,6 +1,7 @@
 """
 Core muxins
 """
+
 from django.contrib import messages
 from django.contrib.auth import mixins
 from django.urls import reverse_lazy

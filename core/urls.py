@@ -1,8 +1,9 @@
 """
 Core urls
 """
+
 from django.urls import path
-import uuid
+
 from . import views
 
 app_name = 'core'
@@ -11,8 +12,14 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('signup/', views.signup_view, name='signup'),
-    path('google-login/', views.google_authentication_view, name='google-login'),
-    path('oauth/callback/', views.google_authentication_callback_view, name='google-login-callback'),
+    path(
+        'google-login/', views.google_authentication_view, name='google-login'
+    ),
+    path(
+        'oauth/callback/',
+        views.google_authentication_callback_view,
+        name='google-login-callback',
+    ),
     path(
         'email-verification/<uidb64>/<token>/',
         views.email_verification_view,
@@ -51,6 +58,9 @@ urlpatterns = [
     ),
     path('contactus/', views.contactus_view, name='contactus'),
     path('user-details/<pk>/', views.user_update_view, name='user-update'),
-
-    path('account-deletion/<pk>/', views.user_account_deletion_view, name='account-deletion')
+    path(
+        'account-deletion/<pk>/',
+        views.user_account_deletion_view,
+        name='account-deletion',
+    ),
 ]

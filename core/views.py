@@ -1,27 +1,27 @@
 """
 Core views
 """
+
 from core.auth.email.contactus import ContactUsView
 from core.auth.email.email_verification import (EmailVerificationView,
                                                 RequestEmailVerificationView)
 from core.auth.login import LoginView
 from core.auth.logout import LogOutView
-from core.auth.socialAuth import (
-GoogleAuthenticationView,
-GoogleAuthenticationCallbackView
-)
 from core.auth.password.password_change import PasswordChangeView
 from core.auth.password.password_reset import (PasswordResetCompleteView,
                                                PasswordResetConfirmView,
                                                PasswordResetDoneView,
                                                RequestPasswordResetView)
 from core.auth.signup import SignupView
-
+from core.auth.socialAuth import (GoogleAuthenticationCallbackView,
+                                  GoogleAuthenticationView)
 from core.users.delete import AccountDeletionView
 from core.users.details import UserUpdateView
 
 google_authentication_view = GoogleAuthenticationView.as_view()
-google_authentication_callback_view = GoogleAuthenticationCallbackView.as_view()
+google_authentication_callback_view = (
+    GoogleAuthenticationCallbackView.as_view()
+)
 login_view = LoginView.as_view()
 logout_view = LogOutView.as_view()
 signup_view = SignupView.as_view()

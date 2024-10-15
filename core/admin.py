@@ -1,6 +1,7 @@
 """
 Core admin
 """
+
 from django.contrib import admin
 
 from core.models import User, UserProfile
@@ -11,6 +12,7 @@ class UserAdmin(admin.ModelAdmin):
     """
     User admin
     """
+
     list_display = (
         'username',
         'email',

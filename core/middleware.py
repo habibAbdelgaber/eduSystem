@@ -1,6 +1,7 @@
 """
 Core middleware
 """
+
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.urls import Resolver404, resolve, reverse
