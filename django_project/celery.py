@@ -11,9 +11,11 @@ app = Celery('django_project')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks()
 
+
 @app.task(bind=True)
 def debug_task(self):
     print(f'Request: {self.request!r}')
+
 
 """app.conf.beat_schedule = {
     'run-tests-every-midnight': {
