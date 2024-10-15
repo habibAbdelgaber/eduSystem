@@ -2,3 +2,4 @@
 exclude = docs
 max-line-length = 119
 extend-ignore = E203
+ignore = E302
