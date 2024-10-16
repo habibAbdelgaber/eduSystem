@@ -89,7 +89,7 @@ class CoreViewsTest(TestCase):
         """
         Test the login view
         """
-        url = reverse('core:login')
+        url = reverse('core:login', follow=True)
         response = self.client.get(url)
         # self.assertEqual(response.status_code, 301)
 
