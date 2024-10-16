@@ -20,4 +20,5 @@ class TokenGenerator(PasswordResetTokenGenerator):
             + six.text_type(user.is_active)
         )
 
+
 email_verification_token = TokenGenerator()
