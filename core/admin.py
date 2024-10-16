@@ -25,5 +25,6 @@ class UserAdmin(admin.ModelAdmin):
     ordering = ('username',)
     filter_horizontal = ()
 
+
 admin.site.register(User, UserAdmin)
 admin.site.register(UserProfile)
