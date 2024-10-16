@@ -89,7 +89,7 @@ class CoreViewsTest(TestCase):
         """
         Test the login view
         """
-        url = reverse('core:login', follow=True)
+        url = reverse('core:login')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 301)
 
@@ -98,7 +98,7 @@ class CoreViewsTest(TestCase):
         data = {'username': 'test@gmail.com', 'password': 'test54321'}
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, reverse('index'), follow=True)
+        self.assertRedirects(response, reverse('index'))
 
     def test_signup_view(self):
         """
