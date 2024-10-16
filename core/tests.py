@@ -97,7 +97,7 @@ class CoreViewsTest(TestCase):
         # self.assertContains(response, 'Log in')
         data = {'username': 'test@gmail.com', 'password': 'test54321'}
         response = self.client.post(url, data)
-        self.assertEqual(response.status_code, 301)
+        self.assertEqual(response.status_code, 302)
         # self.assertRedirects(response, reverse('index'))
 
     def test_signup_view(self):
