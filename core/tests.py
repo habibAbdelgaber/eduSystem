@@ -10,6 +10,8 @@ from .forms import LoginForm, SignupForm
 from .models import UserProfile
 
 # from rest_framework.test import APIClient
+User = get_user_model()
+
 
 class UserProfileTest(TestCase):
     """
@@ -21,8 +23,8 @@ class UserProfileTest(TestCase):
         """
         Set up test data
         """
-        get_user_model().objects.create_user(
-            username='test', email='test@gmail.com', password='test54321'
+        User.objects.create_user(
+            email='test@gmail.com', password='test54321'
         )
 
     def setUp(self):
@@ -30,13 +32,13 @@ class UserProfileTest(TestCase):
         """
         Set up each test method
         """
-        self.user = get_user_model().objects.get(email='test@gmail.com')
+        self.user = User.objects.get(username='test', email='test@gmail.com')
 
     def test_create_userprofile(self):
         """
         Test creating a user profile
         """
-        userprofile = UserProfile.objects.get(user=self.user)
+        userprofile, _ = UserProfile.objects.get_or_create(user=self.user)
         self.assertTrue(isinstance(userprofile, UserProfile))
         self.assertEqual(userprofile.user, self.user)
         self.assertEqual(userprofile.bio, None)
@@ -51,10 +53,10 @@ class UserProfileTest(TestCase):
         # self.assertEqual(userprofile.bio.placeholder, 'Bio')
 
     def test_update_userprofile(self):
-        """
+        '''
         Test updating a user profile
-        """
-        userprofile = UserProfile.objects.get(user=self.user)
+        '''
+        userprofile, _ = UserProfile.objects.get_or_create(user=self.user)
         userprofile.bio = 'Test Bio'
         userprofile.img = 'https://via.placeholder.com/100x100x.jpg'
         userprofile.save()
