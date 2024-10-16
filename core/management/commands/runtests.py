@@ -61,5 +61,5 @@ class Command(BaseCommand):
         )
 
         self.stdout.write(
-            self.style.SUCCESS(f'Django test for custom apps have passed')
+            self.style.SUCCESS('Django test for custom apps have passed')
         )

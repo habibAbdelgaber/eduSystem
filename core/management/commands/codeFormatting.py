@@ -53,10 +53,7 @@ class Command(BaseCommand):
                 formatted_lines = []
                 for line in lines:
                     if line.strip() == "":
-                        if (
-                            len(formatted_lines) > 0
-                            and formatted_lines[-1].strip() == ""
-                        ):
+                        if len(formatted_lines) > 0 and formatted_lines[-1].strip() == "":
                             continue
                     formatted_lines.append(line)
 
