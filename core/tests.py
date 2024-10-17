@@ -2,6 +2,7 @@
 Core tests
 """
 
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
@@ -139,7 +140,7 @@ class CoreViewsTest(TestCase):
         """
         url = reverse('core:logout')
         response = self.client.post(url)
-        self.assertRedirects(response, reverse('core:login'))
+        self.assertRedirects(response, settings.LOGOUT_REDIRECT_URL)
         if response.status_code == 301:
             self.assertEqual(response.status_code, 301)
         else:
