@@ -18,7 +18,7 @@ class SignupView(edit.CreateView, SuccessMessageMixin):
     Signup View
     """
 
-    template_name = 'core/registration/form.html'
+    template_name = 'core/registration/signup.html'
     form_class = SignupForm
     success_url = reverse_lazy('index')
     success_message = 'You have just registered 💪! Please check your email to confirm your account'
