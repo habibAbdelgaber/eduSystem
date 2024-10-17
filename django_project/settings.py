@@ -93,8 +93,8 @@ MIDDLEWARE = [
     'core.middleware.UrlNotFoundInterceptionMiddleware',
 ]
 
-if DEBUG is False:
-    del MIDDLEWARE[0]
+# if DEBUG is False:
+    # del MIDDLEWARE[0]
 
 # Only use clickjacking protection in deployments because the Development Web View uses
 # iframes and needs to be a cross origin.
