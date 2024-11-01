@@ -9,7 +9,23 @@ on:
       - main  # Triggers the action on PR to the main branch
 
 jobs:
-  test:
+  build:
+    env:
+      DEBUG: ${{ secrets.DEBUG }}
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/test_db
+      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+      GOOGLE_REDIRECT_URI: ${{ secrets.GOOGLE_REDIRECT_URI }}
+      GOOGLE_AUTHORIZATION_URL: ${{ secrets.GOOGLE_AUTHORIZATION_URL }}
+      GOOGLE_TOKEN_URL: ${{ secrets.GOOGLE_TOKEN_URL }}
+      GOOGLE_USERINFO_URL: ${{ secrets.GOOGLE_USERINFO_URL }}
+      FROM_DEFAULT_EMAIL: ${{ secrets.FROM_DEFAULT_EMAIL }}
+      EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
+      POSTGRES_DATABASE_NAME: ${{secrets.POSTGRES_DATABASE_NAME}}
+      POSTGRES_DATABASE_USERNAME: ${{secrets.POSTGRES_DATABASE_USERNAME}}
+      POSTGRES_DATABASE_PASSWORD: ${{secrets.POSTGRES_DATABASE_PASSWORD}}
+      POSTGRES_DATABASE_HOSTNAME: ${{secrets.POSTGRES_DATABASE_HOSTNAME}}
+      POSTGRES_DATABASE_PORT: ${{secrets.POSTGRES_DATABASE_PORT}}
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -52,24 +68,7 @@ jobs:
     # - name: Set Environment Variables
       # run: echo "SECRET_KEY=${{secrets.SECRET_KEY}}" >> $GITHUB_ENV
 
-      env:
-        # SECRET_KEY: ${{secrets.SECRET_KEY}}
-        DEBUG: ${{ secrets.DEBUG }}
-        DATABASE_URL: postgresql://postgres:postgres@postgres:5432/test_db
-        GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-        GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-        GOOGLE_REDIRECT_URI: ${{ secrets.GOOGLE_REDIRECT_URI }}
-        GOOGLE_AUTHORIZATION_URL: ${{ secrets.GOOGLE_AUTHORIZATION_URL }}
-        GOOGLE_TOKEN_URL: ${{ secrets.GOOGLE_TOKEN_URL }}
-        GOOGLE_USERINFO_URL: ${{ secrets.GOOGLE_USERINFO_URL }}
-        FROM_DEFAULT_EMAIL: ${{ secrets.FROM_DEFAULT_EMAIL }}
-        EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
-        POSTGRES_DATABASE_NAME: ${{secrets.POSTGRES_DATABASE_NAME}}
-        POSTGRES_DATABASE_USERNAME: ${{secrets.POSTGRES_DATABASE_USERNAME}}
-        POSTGRES_DATABASE_PASSWORD: ${{secrets.POSTGRES_DATABASE_PASSWORD}}
-        POSTGRES_DATABASE_HOSTNAME: ${{secrets.POSTGRES_DATABASE_HOSTNAME}}
-        POSTGRES_DATABASE_PORT: ${{secrets.POSTGRES_DATABASE_PORT}}
-        
+
     - name: Code Formatter
       run: |
         python manage.py codeFormatting django_project/settings.py
@@ -78,7 +77,15 @@ jobs:
       run: |
         pip install flake8
         flake8 .
+
+    - name: Run Code Analysis
+      run: |
+        git ls-files | grep -v 'migrations' | grep -v 'settings.py' | grep -v 'manage.py' | grep -E '.py$' | xargs pylint -E --load-plugins=django_pylint
         
     - name: Run Tests
       run: |
         python manage.py test --verbosity 2 --failfast
+
+    - name: Run Security Checks
+      run: |
+        python manage.py check --deploy --fail-level ERROR
