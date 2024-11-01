@@ -20,8 +20,8 @@ environ.Env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECRET_KEY = os.environ['SECRET_KEY']
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = "nKKbU3j0nc0x5TaclJAsKlJxi6hz_-3uQxWWWVGfyqU0vTFYk6VeN5YIRu7vx_AjZg86vE3DccgLAbR5ei9nT7bxq5o-3TwVW5Mgwvecx8179z8PyWjzxV1-oJy8xk8keEHkXtlZ1KsuEI4XPuglhAhNvjF5nJ"
+# SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', False)
 # DEBUG = False # enable for production
@@ -93,8 +93,8 @@ MIDDLEWARE = [
     'core.middleware.UrlNotFoundInterceptionMiddleware',
 ]
 
-# if DEBUG is False:
-    # del MIDDLEWARE[0]
+if not DEBUG:
+    del MIDDLEWARE[0]
 
 # Only use clickjacking protection in deployments because the Development Web View uses
 # iframes and needs to be a cross origin.

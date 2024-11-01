@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Registration - {{title}}
+{% endblock %}
+{% block content %}
+<div class='d-flex justify-content-center align-items-center' style="height: 100vh">
+  <div class='card pb-0' style='width: 20rem;'>
+    <div class='card-header'>
+        <h5 class='card-title text-center'>
+          {{header}}
+        </h5>
+    </div>
+    <div class='card-body'>
+      <a href="{% url 'core:google-login' %}" class='btn btn-danger btn-block btn-lg mb-3'>
+        {{socialAuthentication}}
+      </a>
+      <form method='POST'
+        action="."
+        >
+        {% csrf_token %}
+        {{ form|crispy }}
+        <div class='d-grid'>
+        <button type='submit' class='btn btn-primary btn-lg'>{{action}}</button>
+        </div>
+      </form>
+      <div class='d-flex justify-content-center flex-column gap-2 mt-2'>
+        {% if form_type == 'signup' %}
+        <a class='text-center bg-light text-black py-2 rounded bg-gray'
+          class='text-primary' href="{% url 'core:login' %}"> Already have an account? <span class='text-primary'>Login</span></a>
+      {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
