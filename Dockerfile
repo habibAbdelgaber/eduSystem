@@ -7,6 +7,11 @@ ENV PYTHONUNBUFFERED 1
 # Setting the working directory
 WORKDIR / app
 
+# Install System Dependencies
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    build-essential \
+    curl
 # Installing dependencies
 COPY requirements.txt /app/
 

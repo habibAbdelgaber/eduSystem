@@ -26,7 +26,6 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
-        # Wait until Postgres is ready before starting the job
 
     steps:
     - name: Checkout code
@@ -36,9 +35,6 @@ jobs:
       uses: actions/setup-python@v4  # Updated version
       with:
         python-version: '3.10'
-    #- name: Install Poetry
-      #run: |
-        #curl -sSL https://install.python-poetry.org | python3 -
         
     - name: Install dependencies
       run: |
@@ -49,26 +45,23 @@ jobs:
       run: |
         python manage.py migrate
 
-    - name: Set Environment Variables
-      run: echo "SECRET_KEY=${{secrets.SECRET_KEY}}" >> $GITHUB_ENV
+    env:
+      DEBUG: ${{ secrets.DEBUG }}
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/test_db
+      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+      GOOGLE_REDIRECT_URI: ${{ secrets.GOOGLE_REDIRECT_URI }}
+      GOOGLE_AUTHORIZATION_URL: ${{ secrets.GOOGLE_AUTHORIZATION_URL }}
+      GOOGLE_TOKEN_URL: ${{ secrets.GOOGLE_TOKEN_URL }}
+      GOOGLE_USERINFO_URL: ${{ secrets.GOOGLE_USERINFO_URL }}
+      FROM_DEFAULT_EMAIL: ${{ secrets.FROM_DEFAULT_EMAIL }}
+      EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
+      POSTGRES_DATABASE_NAME: ${{secrets.POSTGRES_DATABASE_NAME}}
+      POSTGRES_DATABASE_USERNAME: ${{secrets.POSTGRES_DATABASE_USERNAME}}
+      POSTGRES_DATABASE_PASSWORD: ${{secrets.POSTGRES_DATABASE_PASSWORD}}
+      POSTGRES_DATABASE_HOSTNAME: ${{secrets.POSTGRES_DATABASE_HOSTNAME}}
+      POSTGRES_DATABASE_PORT: ${{secrets.POSTGRES_DATABASE_PORT}}
 
-      env:
-        DEBUG: ${{ secrets.DEBUG }}
-        DATABASE_URL: postgresql://postgres:postgres@postgres:5432/test_db
-        GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-        GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-        GOOGLE_REDIRECT_URI: ${{ secrets.GOOGLE_REDIRECT_URI }}
-        GOOGLE_AUTHORIZATION_URL: ${{ secrets.GOOGLE_AUTHORIZATION_URL }}
-        GOOGLE_TOKEN_URL: ${{ secrets.GOOGLE_TOKEN_URL }}
-        GOOGLE_USERINFO_URL: ${{ secrets.GOOGLE_USERINFO_URL }}
-        FROM_DEFAULT_EMAIL: ${{ secrets.FROM_DEFAULT_EMAIL }}
-        EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
-        POSTGRES_DATABASE_NAME: ${{secrets.POSTGRES_DATABASE_NAME}}
-        POSTGRES_DATABASE_USERNAME: ${{secrets.POSTGRES_DATABASE_USERNAME}}
-        POSTGRES_DATABASE_PASSWORD: ${{secrets.POSTGRES_DATABASE_PASSWORD}}
-        POSTGRES_DATABASE_HOSTNAME: ${{secrets.POSTGRES_DATABASE_HOSTNAME}}
-        POSTGRES_DATABASE_PORT: ${{secrets.POSTGRES_DATABASE_PORT}}
-        
     - name: Code Formatter
       run: |
         python manage.py codeFormatting django_project/settings.py
@@ -81,3 +74,34 @@ jobs:
     - name: Run Tests
       run: |
         python manage.py test --verbosity 2 --failfast
+
+  # deploy:
+  #   needs: test  # Runs only if tests pass
+  #   runs-on: ubuntu-latest
+    
+  #   steps:
+  #   - name: Checkout code
+  #     uses: actions/checkout@v4
+
+  #   - name: Set up Python 3.10
+  #     uses: actions/setup-python@v4
+  #     with:
+  #       python-version: '3.10'
+
+  #   - name: Install DigitalOcean CLI (doctl)
+  #     run: |
+  #       sudo snap install doctl
+    
+  #   - name: Build Docker Image
+  #     run: |
+  #       docker build -t registry.digitalocean.com/${{ secrets.DIGITALOCEAN_REGISTRY }}/django-app:latest .
+  #       echo ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} | docker login registry.digitalocean.com -u ${{ secrets.DIGITALOCEAN_REGISTRY_USERNAME }} --password-stdin
+  #       docker push registry.digitalocean.com/${{ secrets.DIGITALOCEAN_REGISTRY }}/django-app:latest
+  #     env:
+  #       DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+    
+  #   - name: Deploy to DigitalOcean App Platform
+  #     run: |
+  #       doctl apps update <your-app-id> --spec ./digitalocean.yml
+  #     env:
+  #       DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
