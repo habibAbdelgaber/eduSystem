@@ -72,7 +72,7 @@ jobs:
 
     - name: Run Code Analysis
       run: |
-        git ls-files | grep -v 'migrations' | grep -v 'settings.py' | grep -v 'manage.py' | grep -E '.py$' | xargs pylint -E --load-plugins=django_pylint
+        git ls-files | grep -v 'migrations' | grep -v 'settings.py' | grep -v 'manage.py' | grep -E '.py$' | xargs pylint -E --load-plugins=pylint_django
         
     - name: Run Tests
       run: |
