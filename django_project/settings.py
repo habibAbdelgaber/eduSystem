@@ -10,24 +10,16 @@ env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False)
 )
+
 # reading .env file
 environ.Env.read_env()
+TESTING = sys.argv[1] == 'test'
 
-# False if not in os.environ
-# DEBUG = env('DEBUG')
-
-# Raises django's ImproperlyConfigured exception if SECRET_KEY not in os.environ
-# SECRET_KEY = env('SECRET_KEY')
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = "nKKbU3j0nc0x5TaclJAsKlJxi6hz_-3uQxWWWVGfyqU0vTFYk6VeN5YIRu7vx_AjZg86vE3DccgLAbR5ei9nT7bxq5o-3TwVW5Mgwvecx8179z8PyWjzxV1-oJy8xk8keEHkXtlZ1KsuEI4XPuglhAhNvjF5nJ"
-# SECRET_KEY = os.environ.get('SECRET_KEY')
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', False)
-# DEBUG = False # enable for production
+SECRET_KEY = env('SECRET_KEY')
 
-TESTING = 'test' in sys.argv
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = [".replit.dev", ".replit.app"]
 CSRF_TRUSTED_ORIGINS = ["https://*.replit.dev", "https://*.replit.app"]
@@ -89,14 +81,14 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # Add the account middleware:
     # Custom Middleware
     'core.middleware.RedirectAuthenticatedUserMiddleware',
     'core.middleware.UrlNotFoundInterceptionMiddleware',
 ]
 
-if not DEBUG:
+if DEBUG is False:
     del MIDDLEWARE[0]
 
 # Only use clickjacking protection in deployments because the Development Web View uses
@@ -171,6 +163,13 @@ INTERNAL_IPS = [
     '2f8112c9-cb1b-440c-ae1b-6e29351a4060-00-dbccepdzye9t.picard.replit.dev',  # Replit public URL
 ]
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Deployment settings and configurations
@@ -189,41 +188,41 @@ if not DEBUG:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_SECONDS = 31536000
     SECURE_DIRECT_EXEPT = []
-    # SECURE_SSL_REDIRECT = True
-    SECURE_SSL_REDIRECT = False
+    SECURE_SSL_REDIRECT = True
+    # SECURE_SSL_REDIRECT = False
     CSRF_COOKIE_SECURE = True
-    # CSRF_COOKIE_SECURE = False
     X_FRAME_OPTIONS = 'DENY'
     SECURE_HSTS_PRELOAD = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARED_PROTO', 'https')
     SECURE_SSL_HOST = True
-
-    CUSTOM_DOMAIN = os.environ.get('CUSTOM_DOMAIN')
+    
     if TESTING:
+        SECURE_SSL_REDIRECT = False
+        
         DATABASES = {
             'default': {
                 'ENGINE': 'django.db.backends.sqlite3',
                 'NAME': BASE_DIR / 'db.sqlite3',
             }
         }
-    
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': os.environ.get('POSTGRES_DATABASE_NAME'),
-            'USER': os.environ.get('POSTGRES_DATABASE_USERNAME'),
-            'PASSWORD': os.environ.get('POSTGRES_DATABASE_PASSWORD'),
-            'HOST': os.environ.get('POSTGRES_DATABASE_HOSTNAME'),
-            'PORT': os.environ.get('POSTGRES_DATABASE_PORT'),
+    else:
+        DATABASES = {
+            'default': {
+                'ENGINE':
+                'django.db.backends.postgresql_psycopg2',
+                'NAME':
+                env('POSTGRES_DATABASE_NAME'),
+                'USER':
+                env('POSTGRES_DATABASE_USERNAME'),
+                'PASSWORD':
+                env('POSTGRES_DATABASE_PASSWORD'),
+                'HOST':
+                env('POSTGRES_DATABASE_HOSTNAME'),
+                'PORT':
+                env('POSTGRES_DATABASE_PORT'),
+            }
         }
-    }
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+    ALLOWED_HOSTS = ['https://domain.com']
 
 # Celery tasks & workers settings
 CELERY_BROKER_URL = 'redis://https://localhost:6379/0'
@@ -248,14 +247,14 @@ CELERY_BEAT_SCHEDULE = {
 # CELERY_TASK_DEFAULT_QUEUE = 'default'
 # CELERY_TASK_DEFAULT_EXCHANGE = 'default'
 
-FROM_DEFAULT_EMAIL = os.environ.get('FROM_DEFAULT_EMAIL')
+FROM_DEFAULT_EMAIL = env('FROM_DEFAULT_EMAIL')
 # X_FRAME_OPTIONS = 'ALLOW-FROM https://2f8112c9-cb1b-440c-ae1b-6e29351a4060-00-dbccepdzye9t.picard.replit.dev/'
-GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
-GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET')
-GOOGLE_REDIRECT_URI = os.environ.get('GOOGLE_REDIRECT_URI')
-GOOGLE_AUTHORIZATION_URL = os.environ.get('GOOGLE_AUTHORIZATION_URL')
-GOOGLE_TOKEN_URL = os.environ.get('GOOGLE_TOKEN_URL')
-GOOGLE_USERINFO_URL = os.environ.get('GOOGLE_USERINFO_URL')
+GOOGLE_CLIENT_ID = env('GOOGLE_CLIENT_ID')
+GOOGLE_CLIENT_SECRET = env('GOOGLE_CLIENT_SECRET')
+GOOGLE_REDIRECT_URI = env('GOOGLE_REDIRECT_URI')
+GOOGLE_AUTHORIZATION_URL = env('GOOGLE_AUTHORIZATION_URL')
+GOOGLE_TOKEN_URL = env('GOOGLE_TOKEN_URL')
+GOOGLE_USERINFO_URL = env('GOOGLE_USERINFO_URL')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
