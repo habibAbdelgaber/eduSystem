@@ -196,17 +196,11 @@ if not DEBUG:
     SECURE_HSTS_PRELOAD = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARED_PROTO', 'https')
     SECURE_SSL_HOST = True
-    
     if TESTING:
         SECURE_SSL_REDIRECT = False
         
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME': BASE_DIR / 'db.sqlite3',
-            }
-        }
-    else:
+    if not TESTING:
+        
         DATABASES = {
             'default': {
                 'ENGINE':
