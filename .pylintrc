@@ -1,0 +1,2 @@
+pylint
+--load-plugins=pylint_django --django-settings-module=django_project.settings
