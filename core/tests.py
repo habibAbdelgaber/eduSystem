@@ -142,7 +142,7 @@ class CoreViewsTest(TestCase):
         url = reverse('core:logout')
         response = self.client.post(url)
         # self.assertRedirects(response, settings.LOGOUT_REDIRECT_URL)
-        self.assertEqual(response.status_code, 301)
+        self.assertEqual(response.status_code, 302)
 
 class FormsTest(TestCase):
     """
