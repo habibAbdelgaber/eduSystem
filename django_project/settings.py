@@ -26,6 +26,8 @@ SECRET_KEY = "nKKbU3j0nc0x5TaclJAsKlJxi6hz_-3uQxWWWVGfyqU0vTFYk6VeN5YIRu7vx_AjZg
 DEBUG = os.environ.get('DEBUG', False)
 # DEBUG = False # enable for production
 
+TESTING = 'test' in sys.argv
+
 ALLOWED_HOSTS = [".replit.dev", ".replit.app"]
 CSRF_TRUSTED_ORIGINS = ["https://*.replit.dev", "https://*.replit.app"]
 
@@ -186,7 +188,7 @@ if not DEBUG:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_SECONDS = 31536000
     SECURE_DIRECT_EXEPT = []
-    SECURE_SSL_REDIRECT = True
+    # SECURE_SSL_REDIRECT = True
     SECURE_SSL_REDIRECT = False
     CSRF_COOKIE_SECURE = True
     # CSRF_COOKIE_SECURE = False
@@ -196,6 +198,14 @@ if not DEBUG:
     SECURE_SSL_HOST = True
 
     CUSTOM_DOMAIN = os.environ.get('CUSTOM_DOMAIN')
+    if TESTING:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+            }
+        }
+    
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
