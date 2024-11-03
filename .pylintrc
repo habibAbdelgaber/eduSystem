@@ -1,2 +1,8 @@
-pylint
---load-plugins=pylint_django --django-settings-module=django_project.settings
+[MASTER]
+load-plugins=pylint_django
+[pylint_django]
+django-settings-module=django_project.settings
+[MASTER]
+ignore=migrations,settings
+[MESSAGES CONTROL]
+disable=missing-docstring
