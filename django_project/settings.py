@@ -13,6 +13,7 @@ env = environ.Env(
 
 # reading .env file
 environ.Env.read_env()
+
 TESTING = sys.argv[1] == 'test'
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -211,15 +212,15 @@ if not DEBUG:
                 'ENGINE':
                 'django.db.backends.postgresql_psycopg2',
                 'NAME':
-                env('POSTGRES_DATABASE_NAME'),
+                env('DB_NAME'),
                 'USER':
-                env('POSTGRES_DATABASE_USERNAME'),
+                env('DB_USER'),
                 'PASSWORD':
-                env('POSTGRES_DATABASE_PASSWORD'),
+                env('DB_PASSWORD'),
                 'HOST':
-                env('POSTGRES_DATABASE_HOSTNAME'),
+                env('DB_HOST'),
                 'PORT':
-                env('POSTGRES_DATABASE_PORT'),
+                env('DB_PORT'),
             }
         }
     ALLOWED_HOSTS = ['https://domain.com']
