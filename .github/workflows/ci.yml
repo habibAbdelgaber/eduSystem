@@ -1,12 +1,13 @@
+
 name: Django Deployment Application (CI/CD)
 
 on:
   push:
     branches:
-      - main  # Triggers the action on push to the main branch
+      - main
   pull_request:
     branches:
-      - main  # Triggers the action on PR to the main branch
+      - main
 
 jobs:
   build:
@@ -21,35 +22,14 @@ jobs:
       GOOGLE_USERINFO_URL: ${{ secrets.GOOGLE_USERINFO_URL }}
       FROM_DEFAULT_EMAIL: ${{ secrets.FROM_DEFAULT_EMAIL }}
       EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
-      DB_NAME: ${{secrets.DB_NAME}}
-      DB_USER: ${{secrets.DB_USER}}
-      DB_PASSWORD: ${{secrets.DB_PASSWORD}}
-      DB_HOST: ${{secrets.DB_HOST}}
-      DB_PORT: ${{secrets.DB_PORT}}
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:13
-        env:
-          DATABASE_URL: postgresql://postgres:postgres@postgres:5432/test_db
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: test_db
-          
-        options: >-
-          --health-cmd "pg_isready -U postgres" 
-          --health-interval 10s 
-          --health-timeout 5s 
-          --health-retries 5
-        ports:
-          - 5432:5432
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4  # Updated version
+      uses: actions/checkout@v4
 
     - name: Set up Python 3.10
-      uses: actions/setup-python@v4  # Updated version
+      uses: actions/setup-python@v4
       with:
         python-version: '3.10'
         
@@ -79,37 +59,6 @@ jobs:
       run: |
         python manage.py test --verbosity 2 --failfast
 
-  # deploy:
-  #   needs: test  # Runs only if tests pass
-  #   runs-on: ubuntu-latest
-    
-  #   steps:
-  #   - name: Checkout code
-  #     uses: actions/checkout@v4
-
-  #   - name: Set up Python 3.10
-  #     uses: actions/setup-python@v4
-  #     with:
-  #       python-version: '3.10'
-
-  #   - name: Install DigitalOcean CLI (doctl)
-  #     run: |
-  #       sudo snap install doctl
-    
-  #   - name: Build Docker Image
-  #     run: |
-  #       docker build -t registry.digitalocean.com/${{ secrets.DIGITALOCEAN_REGISTRY }}/django-app:latest .
-  #       echo ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} | docker login registry.digitalocean.com -u ${{ secrets.DIGITALOCEAN_REGISTRY_USERNAME }} --password-stdin
-  #       docker push registry.digitalocean.com/${{ secrets.DIGITALOCEAN_REGISTRY }}/django-app:latest
-  #     env:
-  #       DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-    
-  #   - name: Deploy to DigitalOcean App Platform
-  #     run: |
-  #       doctl apps update <your-app-id> --spec ./digitalocean.yml
-  #     env:
-  #       DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
     - name: Run Security Checks
       run: |
         python manage.py check --deploy --fail-level ERROR
-
