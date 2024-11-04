@@ -20,7 +20,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = env('SECRET_KEY')
 
-DEBUG = env('DEBUG')
+DEBUG = False
+# DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = [".replit.dev", ".replit.app"]
 CSRF_TRUSTED_ORIGINS = ["https://*.replit.dev", "https://*.replit.app"]
@@ -199,22 +200,23 @@ if not DEBUG:
     if TESTING:
         SECURE_SSL_REDIRECT = False
         
-    if not TESTING:
-        
+    if 'test' in sys.argv:
         DATABASES = {
             'default': {
                 'ENGINE':
-                'django.db.backends.postgresql_psycopg2',
-                'NAME':
-                env('DB_NAME'),
-                'USER':
-                env('DB_USER'),
-                'PASSWORD':
-                env('DB_PASSWORD'),
-                'HOST':
-                env('DB_HOST'),
-                'PORT':
-                env('DB_PORT'),
+                'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+            }
+        }
+    else:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql_psycopg2',
+                'NAME': env('DB_NAME'),
+                'USER': env('DB_USER'),
+                'PASSWORD': env('DB_PASSWORD'),
+                'HOST': env('DB_HOST'),
+                'PORT': env('DB_PORT'),
             }
         }
     ALLOWED_HOSTS = ['https://domain.com']
