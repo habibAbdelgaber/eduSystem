@@ -165,12 +165,12 @@ INTERNAL_IPS = [
     '2f8112c9-cb1b-440c-ae1b-6e29351a4060-00-dbccepdzye9t.picard.replit.dev',  # Replit public URL
 ]
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3', 'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
