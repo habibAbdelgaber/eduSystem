@@ -22,6 +22,11 @@ jobs:
       GOOGLE_USERINFO_URL: ${{ secrets.GOOGLE_USERINFO_URL }}
       FROM_DEFAULT_EMAIL: ${{ secrets.FROM_DEFAULT_EMAIL }}
       EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
+      DB_NAME: ${{secrets.DB_NAME}}
+      DB_USER: ${{secrets.DB_USER}}
+      DB_HOST: ${{secrets.DB_HOST}}
+      DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+      DB_PORT: ${{secrets.DB_PORT}}
     runs-on: ubuntu-latest
 
     steps:
