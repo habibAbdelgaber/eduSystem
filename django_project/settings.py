@@ -165,14 +165,29 @@ INTERNAL_IPS = [
     '2f8112c9-cb1b-440c-ae1b-6e29351a4060-00-dbccepdzye9t.picard.replit.dev',  # Replit public URL
 ]
 
-if DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3', 'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Use SQLite3 for testing or when DEBUG is False
+if env('USE_SQLITE_FOR_TESTS') == 'True' or env('DEBUG', 'True') != 'True':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': env('DB_NAME'),
+            'USER': env('DB_USER'),
+            'PASSWORD': env('DB_PASSWORD'),
+            'HOST': env('DB_HOST'),
+            'PORT': env('DB_PORT'),
+        }
+    }
 
 # Deployment settings and configurations
 if not DEBUG:
@@ -199,23 +214,7 @@ if not DEBUG:
     SECURE_SSL_HOST = True
     if TESTING:
         SECURE_SSL_REDIRECT = False
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-            }
-        }
-    else:
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.postgresql_psycopg2',
-                'NAME': env('DB_NAME'),
-                'USER': env('DB_USER'),
-                'PASSWORD': env('DB_PASSWORD'),
-                'HOST': env('DB_HOST'),
-                'PORT': env('DB_PORT'),
-            }
-        }
+        
     ALLOWED_HOSTS = ['https://domain.com']
 
 # Celery tasks & workers settings
