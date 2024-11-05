@@ -20,8 +20,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = env('SECRET_KEY')
 
-DEBUG = False
-# DEBUG = env('DEBUG')
+# DEBUG = False
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = [".replit.dev", ".replit.app"]
 CSRF_TRUSTED_ORIGINS = ["https://*.replit.dev", "https://*.replit.app"]
@@ -170,7 +170,7 @@ INTERNAL_IPS = [
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Use SQLite3 for testing or when DEBUG is False
-if env('USE_SQLITE_FOR_TESTS') == 'True' or env('DEBUG', 'True') != 'True':
+if env('USE_SQLITE_FOR_TESTS') == 'True' or not env('DEBUG'):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
