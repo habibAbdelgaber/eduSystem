@@ -18,7 +18,7 @@ TESTING = sys.argv[1] == 'test'
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # DEBUG = False
 DEBUG = env('DEBUG')
