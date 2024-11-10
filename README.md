@@ -1,4 +1,3 @@
 ![Build Status](https://github.com/habibAbdelgaber/eduSystem/actions/workflows/ci.yml/badge.svg)
 [![CircleCI](https://circleci.com/gh/habibAbdelgaber/eduSystem.svg?style=svg)](https://circleci.com/gh/habibAbdelgaber/eduSystem)
 
-Description of your project...
