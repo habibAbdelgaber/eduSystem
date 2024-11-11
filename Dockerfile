@@ -31,4 +31,4 @@ RUN python manage.py migrate
 EXPOSE 8000
 
 # Running the Django development server (using gunicorn or wsgi for production)
-CMD ['gunicorn', '--bind', '0.0.0.0:8000', 'django_project.wsgi:application']
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "django_project.wsgi:application"]

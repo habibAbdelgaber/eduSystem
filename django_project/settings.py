@@ -24,7 +24,7 @@ SECRET_KEY = 'd12421eb949603fcac5340420d1c742a4c8843479c4aaf3409c819bdea6ab47db0
 # DEBUG = False
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = [".replit.dev", ".replit.app"]
+ALLOWED_HOSTS = [".replit.dev", ".replit.app", '*']
 CSRF_TRUSTED_ORIGINS = ["https://*.replit.dev", "https://*.replit.app"]
 
 # Application definition
@@ -234,7 +234,7 @@ if not DEBUG:
     SECURE_SSL_HOST = True
     if TESTING:
         SECURE_SSL_REDIRECT = False
-        
+
     ALLOWED_HOSTS = ['https://domain.com']
 
 # Celery tasks & workers settings
