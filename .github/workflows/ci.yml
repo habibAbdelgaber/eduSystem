@@ -90,4 +90,3 @@ jobs:
         run: |
           docker build -t devsteams/django-application
           docker push devsteams/django-application
-
